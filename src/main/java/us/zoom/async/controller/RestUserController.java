@@ -1,8 +1,7 @@
 package us.zoom.async.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import us.zoom.async.entity.Result;
 import us.zoom.async.entity.User;
 
 /**
@@ -22,5 +21,22 @@ public class RestUserController {
     public User getUser(@PathVariable(value = "id") String id){
 
         return null;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/user/login")
+    public Result login(String username, String password){
+
+        System.out.println("------------------");
+        Result result = new Result();
+        if ("admin".equals(username)&& "admin".equals(password)){
+            result.setCode("200");
+            result.setMsg("login success");
+            result.setToken("token123456");
+        }else {
+            result.setCode("401");
+            result.setMsg("login failed");
+        }
+        return result;
     }
 }
