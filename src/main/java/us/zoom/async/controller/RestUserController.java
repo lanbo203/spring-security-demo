@@ -1,5 +1,6 @@
 package us.zoom.async.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import us.zoom.async.entity.Result;
 import us.zoom.async.entity.User;
@@ -9,27 +10,28 @@ import us.zoom.async.entity.User;
  * @Date 2019/3/26 12:15
  * @Description
  */
-@RestController
+@Controller
 public class RestUserController {
 
+    @ResponseBody
     @GetMapping(value = "/test")
     public String test(){
         return "test";
     }
-
+    @ResponseBody
     @GetMapping(value = "/{id}")
     public User getUser(@PathVariable(value = "id") String id){
 
         return null;
     }
 
-    @CrossOrigin(origins = "*")
-    @PostMapping(value = "/user/login")
-    public Result login(String username, String password){
+    @ResponseBody
+    @RequestMapping(value = "/user/login",method = RequestMethod.POST)
+    public Result login(@RequestBody User user){
 
-        System.out.println("------------------");
+        System.out.println("------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------");
         Result result = new Result();
-        if ("admin".equals(username)&& "admin".equals(password)){
+        if ("admin".equals(user.getUsername())&& "admin".equals(user.getPassword())){
             result.setCode("200");
             result.setMsg("login success");
             result.setToken("token123456");
