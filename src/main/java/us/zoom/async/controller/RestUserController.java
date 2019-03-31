@@ -15,8 +15,10 @@ public class RestUserController {
 
     @ResponseBody
     @GetMapping(value = "/test")
-    public String test(){
-        return "test";
+    public Result test(){
+        System.out.println("---- test -----");
+        Result result = new Result("200","test","");
+        return result;
     }
     @ResponseBody
     @GetMapping(value = "/{id}")
