@@ -57,9 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
             .antMatchers("/","/test","/user/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterAfter(buildAbNormalAuthenticationProcessingFilter(),
+                .anyRequest().authenticated();
+
+                http.addFilterAfter(buildAbNormalAuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildToken1AuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class)
@@ -95,21 +95,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private Token1AuthenticationProcessingFilter buildToken1AuthenticationProcessingFilter() throws Exception  {
-        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/token1/test"));
+        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/test1"));
         Token1AuthenticationProcessingFilter filter = new Token1AuthenticationProcessingFilter(matcher,defaultFailureHandler);
         filter.setAuthenticationManager(this.authenticationManager);
         return filter;
     }
 
     private Token2AuthenticationProcessingFilter buildToken2AuthenticationProcessingFilter() throws Exception  {
-        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/token2/test"));
+        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/test2"));
         Token2AuthenticationProcessingFilter filter = new Token2AuthenticationProcessingFilter(matcher,defaultFailureHandler);
         filter.setAuthenticationManager(this.authenticationManager);
         return filter;
     }
 
     private AbNormalAuthenticationProcessingFilter buildAbNormalAuthenticationProcessingFilter() throws Exception {
-        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/**"));
+        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/test1","/test2"));
         AbNormalAuthenticationProcessingFilter filter = new AbNormalAuthenticationProcessingFilter(defaultFailureHandler,matcher);
         filter.setAuthenticationManager(this.authenticationManager);
         return filter;
