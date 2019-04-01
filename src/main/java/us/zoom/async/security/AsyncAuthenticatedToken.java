@@ -16,12 +16,9 @@ public class AsyncAuthenticatedToken extends AbstractAuthenticationToken  {
 
     private String rawToken;
 
-    private UserToken userToken;
-
-    public AsyncAuthenticatedToken(UserToken userToken, Collection<? extends GrantedAuthority> authorities, boolean auth,String rawToken) {
+    public AsyncAuthenticatedToken( Collection<? extends GrantedAuthority> authorities, boolean auth,String rawToken) {
         super(authorities);
         super.setAuthenticated(true);
-        this.userToken = userToken;
         this.auth = auth;
         this.rawToken = rawToken;
         this.setAuthenticated(true);
@@ -53,11 +50,4 @@ public class AsyncAuthenticatedToken extends AbstractAuthenticationToken  {
         this.rawToken = rawToken;
     }
 
-    public UserToken getUserToken() {
-        return userToken;
-    }
-
-    public void setUserToken(UserToken userToken) {
-        this.userToken = userToken;
-    }
 }

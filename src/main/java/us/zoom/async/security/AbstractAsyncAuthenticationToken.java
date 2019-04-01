@@ -22,11 +22,11 @@ public abstract class AbstractAsyncAuthenticationToken extends AbstractAuthentic
 
     @Override
     public Object getCredentials() {
-        return null;
+        return rawToken;
     }
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return rawToken;
     }
 }

@@ -13,4 +13,15 @@ ProviderManager#authenticate, AuthenticationProvider#supports(Class<?> var1)
 
 
 
-1eD5OhenQY-3kzVNzJ-lHQ  2NAh5eAbS1S0HfFJSyBiLA
+AuthenticationProcessingFilter 
+
+
+AbstractSecurityInterceptor
+AbstractSecurityInterceptor  FilterInvocationSecurityMetadataSource  获取所需权限  AccessDecisionManager  鉴权
+访问url时，会被AbstractSecurityInterceptor拦截器拦截，
+然后调用FilterInvocationSecurityMetadataSource的方法来获取被拦截url所需的全部权限，
+再调用授权管理器AccessDecisionManager鉴权。
+
+ProviderManager -> AuthenticationProviders
+AccessDecisionManager -> AccessDecisionVoter -> 
+

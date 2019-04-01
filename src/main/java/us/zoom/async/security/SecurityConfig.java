@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -55,23 +56,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
-            .antMatchers("/","/test","/user/login").permitAll()
-                .anyRequest().authenticated();
-
-                http.addFilterAfter(buildAbNormalAuthenticationProcessingFilter(),
+        http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests()
+                .antMatchers("/","/test","/user/login").permitAll()
+                .and().authorizeRequests().antMatchers("/test1").hasRole("ADMIN")
+                .and().authorizeRequests().anyRequest().authenticated()
+                .and().addFilterAfter(buildAbNormalAuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildToken1AuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildToken2AuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-//        auth.inMemoryAuthentication().withUser("user").password("user").roles("USER").and()
-//                .withUser("admin").password("admin").roles("ADMIN");
         List<AuthenticationProvider> providers = getAuthenticationProviders();
         for (AuthenticationProvider provider : providers) {
             auth.authenticationProvider(provider);
@@ -109,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private AbNormalAuthenticationProcessingFilter buildAbNormalAuthenticationProcessingFilter() throws Exception {
-        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/test1","/test2"));
+        HitPathRequestMatcher matcher = new HitPathRequestMatcher(Arrays.asList("/test1,/test2"));
         AbNormalAuthenticationProcessingFilter filter = new AbNormalAuthenticationProcessingFilter(defaultFailureHandler,matcher);
         filter.setAuthenticationManager(this.authenticationManager);
         return filter;

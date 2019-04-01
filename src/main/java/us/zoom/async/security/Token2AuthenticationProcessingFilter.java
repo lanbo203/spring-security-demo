@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @Author Eden Ye
@@ -20,6 +21,8 @@ public class Token2AuthenticationProcessingFilter extends AsyncAbstractAuthentic
 
     private final AuthenticationFailureHandler failureHandler;
 
+    private final static String TOKEN = "token2";
+
     protected Token2AuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationFailureHandler failureHandler) {
         super(requiresAuthenticationRequestMatcher);
         this.failureHandler = failureHandler;
@@ -27,7 +30,7 @@ public class Token2AuthenticationProcessingFilter extends AsyncAbstractAuthentic
 
     @Override
     public AbstractAuthenticationToken getAuthenticationToken(HttpServletRequest request) {
-        return new Token2AuthenticationToken();
+        return new Token2AuthenticationToken(getRawToken(request));
     }
 
     @Override
@@ -35,5 +38,14 @@ public class Token2AuthenticationProcessingFilter extends AsyncAbstractAuthentic
                                               AuthenticationException failed) throws IOException, ServletException {
         SecurityContextHolder.clearContext();
         failureHandler.onAuthenticationFailure(request, response, failed);
+    }
+    private String getRawToken(HttpServletRequest request) {
+        Optional<String> rawToken = Optional.ofNullable(request.getHeader(TOKEN));
+        if (rawToken.isPresent()) {
+            return rawToken.get();
+        } else {
+            return null;
+        }
+
     }
 }

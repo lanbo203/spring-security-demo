@@ -7,8 +7,8 @@ package us.zoom.async.security;
  */
 public class Token1AuthenticationToken extends AbstractAsyncAuthenticationToken {
 
-    public Token1AuthenticationToken(){
-        super(null);
+    public Token1AuthenticationToken(String rawToken){
+        super(rawToken);
     }
 
 }
