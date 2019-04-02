@@ -33,7 +33,19 @@ DelegatingFilterProxy - FilterChainProxy - HttpFirewall
 Core Security Filters
 
  AccessDeniedException  ExceptionTranslationFilter  AccessDeniedHandler
+ 在HttpSecurity对象中，实际提供的是各默认Filter的配置类，通过配置类来控制对应Filter的各个属性配置；
+ 在配置完成将Filter加载到HttpSecurity中的FilterChain中去。
  
+ httpSecurity 将配置添加到 configurers 属性中去
+ -- 将FormLoginConfigurer对象添加到HttpSecurity的configurers属性中去
+ 
+ HttpSecurity最终会被加载到WebSecurity的securityFilterChainBuilders属性中去；
+  添加进去后，在WebSecurity对象的build方法中，会调用HttpSecurity的build方法生成FilterChain对象
+ HttpSecurity的build-> dobuild -> configure() , add filter -> performBuild 生成FilterChain
+ 
+ 
+ webSecurity 生成filter chain
+ WebSecurityConfiguration
  
  https://blog.csdn.net/icarusliu/article/details/78739006
  https://blog.csdn.net/icarusliu/article/details/78722384
