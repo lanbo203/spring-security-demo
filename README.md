@@ -25,3 +25,15 @@ AbstractSecurityInterceptor  FilterInvocationSecurityMetadataSource  获取所�
 ProviderManager -> AuthenticationProviders
 AccessDecisionManager -> AccessDecisionVoter -> 
 
+
+
+
+DelegatingFilterProxy - FilterChainProxy - HttpFirewall
+
+Core Security Filters
+
+ AccessDeniedException  ExceptionTranslationFilter  AccessDeniedHandler
+ 
+ 
+ https://blog.csdn.net/icarusliu/article/details/78739006
+ https://blog.csdn.net/icarusliu/article/details/78722384
